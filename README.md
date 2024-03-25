@@ -14,7 +14,7 @@ graph LR
 
     %% nodes %%
     Person((User)):::person
-    MainSystem((Pasta Bean <br>Platform)):::mainSystem
+    MainSystem[Pasta Bean <br>Platform]:::mainSystem
     ExistingSystem["GitHub"]:::existingSystem
 
     %% connections and boundaries %%
