@@ -78,3 +78,89 @@ graph LR
     end
     class Legend frame
 ```
+
+### Модель данных
+```mermaid
+erDiagram
+    Language {
+        uuid id
+        varchar name
+    }
+    Theme {
+        uuid id
+        varchar name
+    }
+    Pasta {
+        uuid id
+        varchar title
+        text content
+        uuid theme_id
+        uuid language_id
+        timestamp created_at
+        timestamp updated_at
+    }
+    Pasta }o--|| Language : has
+    Pasta }o--|| Theme : has
+
+    User {
+        uuid id
+        varchar login
+        varchar email
+        varchar hashed_password
+    }
+    Profile {
+        uuid user_id
+        varchar fullname
+        varchar description
+        varchar avatar_link
+    }
+    User ||--|| Profile : has
+
+    GuestPasta {
+        uuid pasta_id
+        varchar share_link
+        varchar hashed_secret
+    }
+    GuestPasta ||--|| Pasta : extends
+
+    UserPasta {
+        uuid pasta_id
+        uuid user_id
+        bool is_public
+    }
+    UserPasta ||--|| Pasta : extends
+    User ||--o{ UserPasta : creates
+
+    Tag {
+        uuid id
+        uuid user_id
+        varchar name
+        timestamp created_at
+    }
+    TagInPasta {
+        uuid pasta_id
+        uuid tag_id
+        timestamp created_at
+    }
+    Tag ||--o{ TagInPasta : "includes in"
+    UserPasta ||--o{ TagInPasta : has
+    User ||--o{ Tag : creates
+
+    Like {
+        uuid pasta_id
+        uuid user_id
+    }
+    User ||--o{ Like : puts
+    UserPasta ||--o{ Like : has
+
+    Comment {
+        uuid id
+        uuid user_id
+        uuid pasta_id
+        uuid parent_comment_id
+        varchar text
+        
+    }
+    User ||--o{ Comment : creates
+    UserPasta ||--o{ Comment : has
+```
